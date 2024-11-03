@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "photocards",
+  "info": {
+    "singularName": "photocard",
+    "pluralName": "photocards",
+    "displayName": "Photocard"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "message": {
+      "type": "string"
+    },
+    "coverImage": {
+      "allowedTypes": [
+        "images",
+        "files"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}
