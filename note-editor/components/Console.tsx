@@ -14,6 +14,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   const [image, setImage] = useState(null);
   const [numberOfCameras, setNumberOfCameras] = useState(0);
   const [text, setText] = useState("");
+  const [predicting, setPredicting] = useState(false);
 
   const errorMsgs = {
     noCameraAccessible:
@@ -117,8 +118,9 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
       </div>
 
       <button
-        className="mt-4 shadow-md bg-[#f17a7e]  border-b-4 border-[#ec4c51] py-2 px-4 text-white font-bold rounded-md"
+        className={`mt-4 shadow-md border-b-4 py-2 px-4 font-bold rounded-md ${image == null ? "text-slate-500 bg-slate-300 border-slate-500" : "text-white bg-[#f17a7e] border-[#ec4c51]"}`}
         onClick={handlePost}
+        disabled={image == null}
       >
         Post !
       </button>
