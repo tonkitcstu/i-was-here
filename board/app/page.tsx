@@ -3,7 +3,6 @@
 import PhotoCard, { PhotoCardProps } from "@/components/PhotoCard";
 import { useEffect, useState } from "react";
 import { getPhotoCard } from "./api/strapi";
-import { createSwapy } from "swapy";
 
 export default function Home() {
   const [photoCards, setPhotoCards] = useState<PhotoCardProps[]>([]);
@@ -14,6 +13,8 @@ export default function Home() {
       const { data } = await getPhotoCard();
       for (let i = 0; i < data.length; i++) {
         const photoCard = data[i];
+        const id = photoCard.id;
+        const documentID = photoCard.documentId;
         const message = photoCard.message;
         const top = photoCard.top;
         const left = photoCard.left;
@@ -24,7 +25,8 @@ export default function Home() {
             process.env.NEXT_PUBLIC_STRAPI_HOST + photoCard.coverImage.url;
         }
         tmpList.push({
-          id: data[i].id,
+          id: id,
+          documentID: documentID,
           message: message,
           top: top,
           left: left,
@@ -40,8 +42,9 @@ export default function Home() {
     <div className="w-full">
       {photoCards.map((photoCard) => (
         <PhotoCard
-          id={photoCard.id}
           key={photoCard.id}
+          id={photoCard.id}
+          documentID={photoCard.documentID}
           message={photoCard.message}
           top={photoCard.top}
           left={photoCard.left}

@@ -1,8 +1,13 @@
+"use client";
+
+import { updatePhotoCardLocation } from "@/app/api/strapi";
 import React from "react";
 import { Rnd } from "react-rnd";
+import { useRef } from "react";
 
 export interface PhotoCardProps {
   id: number;
+  documentID: string;
   message: string;
   top: number;
   left: number;
@@ -12,9 +17,31 @@ export interface PhotoCardProps {
 const PhotoCard: React.FunctionComponent<PhotoCardProps> = (
   props: PhotoCardProps,
 ) => {
+  const top = useRef(props.top);
+  const left = useRef(props.left);
+  const cardRef = useRef(null);
+
   return (
-    <Rnd>
+    <Rnd
+      onDragStop={(e, data) => {
+        if (data.x != 0 || data.y != 0) {
+          const rect = cardRef.current.getBoundingClientRect();
+          if (rect != null) {
+            if (top.current != rect.top || left.current != rect.left) {
+              top.current = rect.top;
+              left.current = rect.left;
+              updatePhotoCardLocation(
+                props.documentID,
+                top.current,
+                left.current,
+              );
+            }
+          }
+        }
+      }}
+    >
       <div
+        ref={cardRef}
         className="grid justify-items-center pt-2"
         style={{
           position: "absolute",
