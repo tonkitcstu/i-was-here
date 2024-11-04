@@ -1,26 +1,31 @@
 {
-  "name": "my-app",
+  "name": "board",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.0.0-rc-02c0e824-20241028",
-    "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "next": "15.0.2"
+    "@hello-pangea/dnd": "^17.0.0",
+    "@types/qs": "^6.9.15",
+    "@types/react": "^18.3.12",
+    "next": "15.0.2",
+    "qs": "^6.12.1",
+    "react": "^18.3.1",
+    "react-draggable": "^4.4.6",
+    "react-rnd": "^10.4.13",
+    "swapy": "^0.4.2"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.2"
+    "typescript": "^5"
   }
 }

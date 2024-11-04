@@ -3,6 +3,9 @@
 import React, { useState, useRef } from "react";
 import { Camera } from "react-camera-pro";
 import Image from "next/image";
+import createPromtMessage from "@/app/api/rekognition";
+import { getFunnySentence } from "@/app/api/gemini";
+import { createPhotoCard } from "@/app/api/strapi";
 
 interface ConsoleProps {}
 
@@ -10,6 +13,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   const camera = useRef(null);
   const [image, setImage] = useState(null);
   const [numberOfCameras, setNumberOfCameras] = useState(0);
+  const [text, setText] = useState("");
 
   const errorMsgs = {
     noCameraAccessible:
@@ -21,7 +25,6 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
     canvas: "Canvas is not supported.",
   };
 
-  const [text, setText] = useState("");
   const maxRows = 2;
   const maxLength = 50;
 
@@ -36,6 +39,27 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   };
 
   const handleReset = () => {
+    setImage(null);
+    setText("");
+  };
+
+  const handlePhotoCapture = async () => {
+    const image = camera.current.takePhoto();
+
+    setImage(image);
+    if (image != null) {
+      const promt = await createPromtMessage(image);
+      const message = await getFunnySentence(promt);
+      setText(message);
+    }
+  };
+
+  const handlePost = async () => {
+    try {
+      createPhotoCard(image, text);
+    } catch {
+      console.log("Error when posting the photo");
+    }
     setImage(null);
     setText("");
   };
@@ -82,7 +106,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
           </button>
           <button
             className="p-4 shadow-sm bg-white w-20 h-20 rounded-full grid justify-items-center"
-            onClick={() => setImage(camera.current.takePhoto())}
+            onClick={handlePhotoCapture}
           >
             <div className="p-6 bg-red-100 rounded-full" />
           </button>
@@ -92,7 +116,10 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
         </div>
       </div>
 
-      <button className="mt-4 shadow-md bg-[#f17a7e]  border-b-4 border-[#ec4c51] py-2 px-4 text-white font-bold rounded-md">
+      <button
+        className="mt-4 shadow-md bg-[#f17a7e]  border-b-4 border-[#ec4c51] py-2 px-4 text-white font-bold rounded-md"
+        onClick={handlePost}
+      >
         Post !
       </button>
     </div>

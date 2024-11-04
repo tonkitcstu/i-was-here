@@ -4,7 +4,8 @@
   "info": {
     "singularName": "photocard",
     "pluralName": "photocards",
-    "displayName": "Photocard"
+    "displayName": "Photocard",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,13 +16,19 @@
       "type": "string"
     },
     "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "files"
-      ],
-      "type": "media",
-      "multiple": false,
-      "required": true
+      ]
+    },
+    "top": {
+      "type": "integer"
+    },
+    "left": {
+      "type": "integer"
     }
   }
 }

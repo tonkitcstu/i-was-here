@@ -372,6 +372,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiPhotocardPhotocard extends Struct.CollectionTypeSchema {
   collectionName: 'photocards';
   info: {
+    description: '';
     displayName: 'Photocard';
     pluralName: 'photocards';
     singularName: 'photocard';
@@ -385,6 +386,7 @@ export interface ApiPhotocardPhotocard extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    left: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -393,6 +395,7 @@ export interface ApiPhotocardPhotocard extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     message: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    top: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
