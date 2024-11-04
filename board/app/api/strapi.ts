@@ -47,3 +47,22 @@ export async function updatePhotoCardLocation(
     throw new Error("Failed to fetch data");
   }
 }
+
+export async function deletePhotoCard(documentID: string) {
+  const tokenHeader = "Bearer " + process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+  const url = new URL(
+    "/api/photocards/" + documentID,
+    process.env.NEXT_PUBLIC_STRAPI_HOST,
+  );
+
+  const res = await fetch(url.href, {
+    method: "DELETE",
+    headers: {
+      Authorization: tokenHeader,
+      "content-type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+}
