@@ -28,7 +28,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   };
 
   const maxRows = 2;
-  const maxLength = 50;
+  const maxLength = 45;
 
   const handleChange = (e) => {
     const lines = e.target.value.split("\n");
@@ -63,7 +63,6 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
         setMessage(message);
         setIsPredictionFalied(false);
       } catch (e) {
-        setMessage("");
         setIsPredictionFalied(true);
         setIsPredicting(false);
       }
