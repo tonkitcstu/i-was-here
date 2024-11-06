@@ -13,8 +13,9 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   const camera = useRef(null);
   const [image, setImage] = useState(null);
   const [numberOfCameras, setNumberOfCameras] = useState(0);
-  const [text, setText] = useState("");
-  const [predicting, setPredicting] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isPredicting, setIsPredicting] = useState(false);
+  const [isPredictionFailed, setIsPredictionFalied] = useState(false);
 
   const errorMsgs = {
     noCameraAccessible:
@@ -33,15 +34,15 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
     const lines = e.target.value.split("\n");
 
     if (lines.length <= maxRows && e.target.value.length <= maxLength) {
-      setText(e.target.value);
+      setMessage(e.target.value);
     } else if (lines.length > maxRows) {
-      setText(lines.slice(0, maxRows).join("\n"));
+      setMessage(lines.slice(0, maxRows).join("\n"));
     }
   };
 
   const handleReset = () => {
     setImage(null);
-    setText("");
+    setMessage("");
   };
 
   const handlePhotoCapture = async () => {
@@ -49,20 +50,30 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
 
     setImage(image);
     if (image != null) {
-      const promt = await createPromtMessage(image);
-      const message = await getFunnySentence(promt);
-      setText(message);
+      try {
+        setIsPredicting(true);
+        const promt = await createPromtMessage(image);
+        const message = await getFunnySentence(promt);
+        setMessage(message);
+        setIsPredictionFalied(false);
+      } catch (e) {
+        setMessage("");
+        setIsPredictionFalied(true);
+        setIsPredicting(false);
+      }
     }
   };
 
   const handlePost = async () => {
     try {
-      createPhotoCard(image, text);
+      createPhotoCard(image, message);
     } catch {
       console.log("Error when posting the photo");
     }
     setImage(null);
-    setText("");
+    setMessage("");
+    setIsPredictionFalied(false);
+    setIsPredicting(false);
   };
 
   return (
@@ -83,12 +94,18 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
             </div>
           </div>
           <textarea
-            value={text}
+            value={message}
             rows={maxRows}
             maxLength={maxLength}
             onChange={handleChange}
-            placeholder="Write your moment..."
-            className="m-4 text-xl resize-none focus:outline-none focus:ring-0 overflow-hidden"
+            placeholder={
+              isPredicting
+                ? "Genarating message..."
+                : isPredictionFailed
+                  ? "Sorry, Message Genaration is failed, please write it yourself."
+                  : "Write your moment..."
+            }
+            className="m-4 message-xl resize-none focus:outline-none focus:ring-0 overflow-hidden"
           ></textarea>
         </div>
       </div>
@@ -106,6 +123,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
             <Image src="/switch-camera.svg" width={40} height={40} alt="" />
           </button>
           <button
+            disabled={image != null}
             className="p-4 shadow-sm bg-white w-20 h-20 rounded-full grid justify-items-center"
             onClick={handlePhotoCapture}
           >
@@ -118,7 +136,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
       </div>
 
       <button
-        className={`mt-4 shadow-md border-b-4 py-2 px-4 font-bold rounded-md ${image == null ? "text-slate-500 bg-slate-300 border-slate-500" : "text-white bg-[#f17a7e] border-[#ec4c51]"}`}
+        className={`mt-4 shadow-md border-b-4 py-2 px-4 font-bold rounded-md ${image == null ? "message-slate-500 bg-slate-300 border-slate-500" : "message-white bg-[#f17a7e] border-[#ec4c51]"}`}
         onClick={handlePost}
         disabled={image == null}
       >
