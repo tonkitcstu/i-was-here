@@ -14,8 +14,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   const [image, setImage] = useState(null);
   const [numberOfCameras, setNumberOfCameras] = useState(0);
   const [message, setMessage] = useState("");
-  const [isPredicting, setIsPredicting] = useState(false);
-  const [isPredictionFailed, setIsPredictionFalied] = useState(false);
+  const [placeHolder, setPlaceHolder] = useState("Write your moments...");
 
   const errorMsgs = {
     noCameraAccessible:
@@ -43,8 +42,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   const reset = () => {
     setImage(null);
     setMessage("");
-    setIsPredictionFalied(false);
-    setIsPredicting(false);
+    setPlaceHolder("Write your moments...");
   };
 
   const handleReset = () => {
@@ -57,14 +55,14 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
     setImage(image);
     if (image != null) {
       try {
-        setIsPredicting(true);
+        setPlaceHolder("Genarating message...");
         const promt = await createPromtMessage(image);
         const message = await getFunnySentence(promt);
         setMessage(message);
-        setIsPredictionFalied(false);
       } catch (e) {
-        setIsPredictionFalied(true);
-        setIsPredicting(false);
+        setPlaceHolder(
+          "Sorry, Message Genaration is failed, please write it yourself.",
+        );
       }
     }
   };
@@ -72,10 +70,10 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
   const handlePost = async () => {
     try {
       createPhotoCard(image, message);
+      reset();
     } catch {
       console.log("Error when posting the photo");
     }
-    reset();
   };
 
   return (
@@ -100,13 +98,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
             rows={maxRows}
             maxLength={maxLength}
             onChange={handleChange}
-            placeholder={
-              isPredicting
-                ? "Genarating message..."
-                : isPredictionFailed
-                  ? "Sorry, Message Genaration is failed, please write it yourself."
-                  : "Write your moment..."
-            }
+            placeholder={placeHolder}
             className="m-4 message-xl resize-none focus:outline-none focus:ring-0 overflow-hidden"
           ></textarea>
         </div>
