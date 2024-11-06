@@ -73,7 +73,7 @@ const PhotoCard: React.FunctionComponent<PhotoCardProps> = (
         ) : (
           <></>
         )}
-        <div className="flex flex-col w-[12rem] h-[16rem] rounded-md bg-white shadow-lg">
+        <div className="flex flex-col w-[12rem] h-[17rem] rounded-md bg-white shadow-lg">
           <div className="flex justify-center pt-2 rounded-md">
             <div className="relative w-[11rem] h-[10rem] bg-black rounded-md max-h-sm max-w-sm">
               {props.coverImage != "" ? (
@@ -87,8 +87,9 @@ const PhotoCard: React.FunctionComponent<PhotoCardProps> = (
               )}
             </div>
           </div>
-
-          <span className="m-5 text-md overflow-hidden">{props.message}</span>
+          <span className="mt-5 mx-2 text-md text-slate-700 overflow-hidden">
+            {props.message}
+          </span>
         </div>
       </div>
     </Rnd>

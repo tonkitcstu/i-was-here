@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
+import { Chewy, Sriracha } from "next/font/google";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const chewy = Chewy({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  variable: "--font-chewy",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const sriracha = Sriracha({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  variable: "--font-sriracha",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#d1d5db]`}
+        className={`${chewy.className} ${sriracha.className} antialiased bg-[#d1d5db]`}
       >
         {children}
       </body>
