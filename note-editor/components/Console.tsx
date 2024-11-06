@@ -40,9 +40,15 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
     }
   };
 
-  const handleReset = () => {
+  const reset = () => {
     setImage(null);
     setMessage("");
+    setIsPredictionFalied(false);
+    setIsPredicting(false);
+  };
+
+  const handleReset = () => {
+    reset();
   };
 
   const handlePhotoCapture = async () => {
@@ -70,10 +76,7 @@ const Console: React.FunctionComponent<ConsoleProps> = () => {
     } catch {
       console.log("Error when posting the photo");
     }
-    setImage(null);
-    setMessage("");
-    setIsPredictionFalied(false);
-    setIsPredicting(false);
+    reset();
   };
 
   return (
